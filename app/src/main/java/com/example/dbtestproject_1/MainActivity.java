@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createDatabase(String name) {
+    private void createDatabase(String name) { // DB 생성 메소드
         println("createDatabase 호출됨!");
         database = openOrCreateDatabase(name, MODE_PRIVATE, null);
         println("DB 생성함 : " + name);
