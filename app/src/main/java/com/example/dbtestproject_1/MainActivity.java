@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         println("DB 생성함 : " + name);
     }
 
-    private void createTable(String name) {
-        println("createTable 호출됨.");
+    private void createTable(String name) { // 테이블 생성 메소드
+        println("createTable 호출됨!");
         if(database != null) {
             println("데이터베이스를 먼저 생성하세요.");
             return;
@@ -69,8 +69,28 @@ public class MainActivity extends AppCompatActivity {
                 + " _id integer PRIMARY KEY autoincrement, " // PRIMARY KEY autoincrement 의미 => 자동으로 1씩 증가하는(autoincrement) + 키 값(PRIMARY KEY)
                 + " name text, "
                 + " age integer, "
-                + " mobileNum text"  );
+                + " mobileNum text)"  );
         println("테이블 생성함 : " + name);
+
+    }
+
+    private void insertRecord() { // 레코드 추가 메소드
+        println("insertRecord 호출됨!");
+        if(database == null) {
+            println("DB를 먼저 생성해주세요.");
+            return;
+        }
+        if(tableName == null) {
+            println("Table을 생성하셔야 합니다.");
+            return;
+        }
+
+        database.execSQL("insert into" + tableName
+                + "(name, age, mobile) "
+                + "values "
+                + "('Dawon', 18, '010-1234-5678')");
+
+        println("레코드 추가함");
 
     }
 
