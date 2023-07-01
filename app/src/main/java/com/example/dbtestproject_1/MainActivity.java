@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                tableName = editText2.getText().toString();
+                createTable(tableName);
             }
         });
 
@@ -52,6 +53,25 @@ public class MainActivity extends AppCompatActivity {
         println("createDatabase 호출됨!");
         database = openOrCreateDatabase(name, MODE_PRIVATE, null);
         println("DB 생성함 : " + name);
+    }
+
+    private void createTable(String name) {
+        println("createTable 호출됨.");
+        if(database != null) {
+            println("데이터베이스를 먼저 생성하세요.");
+            return;
+        }
+
+        database.execSQL("create table if not exists " + name + "("
+                // createTalbe 메서드에서 호출한 execSQL 메서드는 SQL 문을 파라미터 형식으로 전달받아 원하는 기능의 SQL을 정의해 사용할 수 있다.
+                // 만들 테이블 : 직원 테이블 -> 직원 id, 이름, 나이, 폰 번호 등을 칼럼으로 정의함.
+                // id 앞에 _를 붙여서 _id 로 하는 것 -> 안드로이드에서 권장하는 칼럼 정의 방법.
+                + " _id integer PRIMARY KEY autoincrement, " // PRIMARY KEY autoincrement 의미 => 자동으로 1씩 증가하는(autoincrement) + 키 값(PRIMARY KEY)
+                + " name text, "
+                + " age integer, "
+                + " mobileNum text"  );
+        println("테이블 생성함 : " + name);
+
     }
 
 }
