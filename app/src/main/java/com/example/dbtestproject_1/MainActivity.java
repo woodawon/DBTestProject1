@@ -1,7 +1,5 @@
 package com.example.dbtestproject_1;
 
-import static java.sql.DriverManager.println;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 변수 선언
     EditText editText1;
     EditText editText2;
     Button button1;
@@ -27,25 +26,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 변수 값 선언
         editText1 = findViewById(R.id.editText1);
         editText2 = findViewById(R.id.editText2);
         textView = findViewById(R.id.textView);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String databaseName = editText1.getText().toString();
-                createDatabase(databaseName);
-            }
+        // Button setOnclickListener
+        button1.setOnClickListener(view -> {
+            String databaseName = editText1.getText().toString();
+            createDatabase(databaseName);
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tableName = editText2.getText().toString();
-                createTable(tableName);
-                insertRecord(); // DB or Table 이 만들어지지 않았을 경우 레코드를 추가하지 않음
-            }
+        button2.setOnClickListener(view -> {
+            tableName = editText2.getText().toString();
+            createTable(tableName);
+            insertRecord(); // DB or Table 이 만들어지지 않았을 경우 레코드를 추가하지 않음
         });
 
     }
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        database.execSQL("insert into" + tableName
+        database.execSQL("insert into " + tableName
                 + "(name, age, mobile) "
                 + "values "
                 + "('Dawon', 18, '010-1234-5678')");
@@ -95,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void println(String data) { -> println 메소드 : import static java.sql.DriverManager.println; 덕에 필요 없어짐
-//        textView.append(data + "\n");
-//    }
+    public void println(String data) {
+        textView.append(data + "\n");
+    }
 
 }
