@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 tableName = editText2.getText().toString();
                 createTable(tableName);
+                insertRecord(); // DB or Table 이 만들어지지 않았을 경우 레코드를 추가하지 않음
             }
         });
 
@@ -93,5 +94,9 @@ public class MainActivity extends AppCompatActivity {
         println("레코드 추가함");
 
     }
+
+//    public void println(String data) { -> println 메소드 : import static java.sql.DriverManager.println; 덕에 필요 없어짐
+//        textView.append(data + "\n");
+//    }
 
 }
