@@ -16,21 +16,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public DatabaseHelper(Context context) {
-        super(context, dbName, null, version);
+        super(context, dbName, null, version); // null --> cursorFactory object
     }
 
     public void onCreate(SQLiteDatabase db) {
         println("Oncreate called.");
 
+        String sql = "create table if not exists emp("
+                + " _id integer PRIMARY KEY autoincrement, "
+                + " name text, "
+                + " age integer, "
+                + "mobileNum text)";
 
+        db.execSQL(sql); // onCreate 메서드 안에서 sql 실행.
     }
 
     public void onOpen(SQLiteDatabase db) {
-
+        println("onOpen called.");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        println("onUpgrade called. : " + oldVersion + newVersion);
+        if(newVersion > 1) {
+            db.execSQL("DROP TABLE IF EXISTS emp");
+        }
     }
 
 }

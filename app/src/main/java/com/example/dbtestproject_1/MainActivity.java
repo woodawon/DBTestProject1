@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase database;
     String tableName;
 
+    DatabaseHelper dbHelper; // DatabaseHelper 클래스 선언
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +46,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createDatabase(String dbname) { // DB 생성 메소드
+//    private void createDatabase(String dbname) { // DB 생성 메소드 1 -> 별도 클래스 생성 없이, 바로 DB 생성하는 메소드
+//        println("createDatabase 호출됨!");
+//        database = openOrCreateDatabase(dbname, MODE_PRIVATE, null);
+//        println("DB 생성함 : " + dbname);
+//    }
+
+    private void createDatabase(String name) { // DB 생성 메소드 2 -> DatabaseHelper 클래스를 생성해 사용하여 DB 생성하는 메소드
         println("createDatabase 호출됨!");
-        database = openOrCreateDatabase(dbname, MODE_PRIVATE, null);
-        println("DB 생성함 : " + dbname);
+        dbHelper = new DatabaseHelper(this);
+        database = dbHelper.getWritableDatabase();
     }
 
     private void createTable(String name) { // 테이블 생성 메소드
