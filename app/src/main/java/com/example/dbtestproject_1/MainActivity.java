@@ -1,10 +1,7 @@
 package com.example.dbtestproject_1;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,24 +39,23 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(view -> {
             tableName = editText2.getText().toString();
             createTable(tableName);
-            insertRecord(); // DB or Table 이 만들어지지 않았을 경우 레코드를 추가하지 않음
+            insertRecord();
         });
 
     }
 
-    private void createDatabase(String name) { // DB 생성 메소드
+    private void createDatabase(String dbname) { // DB 생성 메소드
         println("createDatabase 호출됨!");
-        database = openOrCreateDatabase(name, MODE_PRIVATE, null);
-        println("DB 생성함 : " + name);
+        database = openOrCreateDatabase(dbname, MODE_PRIVATE, null);
+        println("DB 생성함 : " + dbname);
     }
 
     private void createTable(String name) { // 테이블 생성 메소드
         println("createTable 호출됨!");
-        if(database != null) {
+        if(database == null) {
             println("데이터베이스를 먼저 생성하세요.");
             return;
         }
-
         database.execSQL("create table if not exists " + name + "("
                 // createTalbe 메서드에서 호출한 execSQL 메서드는 SQL 문을 파라미터 형식으로 전달받아 원하는 기능의 SQL을 정의해 사용할 수 있다.
                 // 만들 테이블 : 직원 테이블 -> 직원 id, 이름, 나이, 폰 번호 등을 칼럼으로 정의함.
@@ -68,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 + " name text, "
                 + " age integer, "
                 + " mobileNum text)"  );
+
         println("테이블 생성함 : " + name);
 
     }
@@ -79,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if(tableName == null) {
-            println("Table을 생성하셔야 합니다.");
+            println("Table 생성을 하셔야 합니다.");
             return;
         }
 
         database.execSQL("insert into " + tableName
-                + "(name, age, mobile) "
-                + "values "
+                + "(name, age, mobileNum) "
+                + " values "
                 + "('Dawon', 18, '010-1234-5678')");
 
         println("레코드 추가함");
