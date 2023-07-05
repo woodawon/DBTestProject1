@@ -1,7 +1,10 @@
 package com.example.dbtestproject_1;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,10 +12,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     // 변수 선언
-    EditText editText1;
-    EditText editText2;
-    Button button1;
-    Button button2;
+    EditText editText1, editText2;
+    Button button1, button2, button3;
     TextView textView;
 
     SQLiteDatabase database;
@@ -31,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+
+//        button1.setOnClickListener(new View.OnClickListener() { 람다식 사용 전의 기존 방식
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         // Button setOnclickListener
         button1.setOnClickListener(view -> {
@@ -44,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
             insertRecord();
         });
 
+        button3.setOnClickListener(view -> {
+            executeQuery();
+        });
+
     }
 
 //    private void createDatabase(String dbname) { // DB 생성 메소드 1 -> 별도 클래스 생성 없이, 바로 DB 생성하는 메소드
@@ -53,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     private void createDatabase(String name) { // DB 생성 메소드 2 -> DatabaseHelper 클래스를 생성해 사용하여 DB 생성하는 메소드
-        println("createDatabase 호출됨!");
+        println("createDatabase called.");
         dbHelper = new DatabaseHelper(this);
         database = dbHelper.getWritableDatabase();
     }
 
     private void createTable(String name) { // 테이블 생성 메소드
-        println("createTable 호출됨!");
+        println("createTable called.");
         if(database == null) {
             println("데이터베이스를 먼저 생성하세요.");
             return;
@@ -78,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertRecord() { // 레코드 추가 메소드
-        println("insertRecord 호출됨!");
+        println("insertRecord called.");
         if(database == null) {
             println("DB를 먼저 생성해주세요.");
             return;
@@ -95,6 +108,27 @@ public class MainActivity extends AppCompatActivity {
 
         println("레코드 추가함");
 
+    }
+
+    private void executeQuery() {
+        println("executeQuery called.");
+
+        // cursor 객체 : 테이블에 들어있는 각각의 레코드를 순서대로 접근할 수 있도록 해줌.
+        Cursor cursor = database.rawQuery("select _id, name, age, mobileNum from emp", null); // sql select문 실행해서 rawQuery 메소드를 사용해 cursor 객체 반환받음.
+        int recordCount = cursor.getCount(); // 레코드 개수 세기.
+        println("레코드 개수 : " + recordCount);
+
+        for(int i = 0;i < recordCount;i++) {
+            cursor.moveToNext();
+            // 순서대로 접근하여 변수 값을 지정함.
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            int age = cursor.getInt(2);
+            String mobileNum = cursor.getString(3);
+            // 해당 레코드 값 출력.
+            println("레코드 [" + i + "] : " + id + "," + name + "," + age + "," + mobileNum);
+        }
+        cursor.close();
     }
 
     public void println(String data) {

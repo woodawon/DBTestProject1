@@ -8,7 +8,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // 변수 값 선언
-    public static String dbName = "username.db";
+    public static String dbName = "username";
     public  static int version = 1;
 
     public void println(String data) {
